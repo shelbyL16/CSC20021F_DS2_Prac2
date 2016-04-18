@@ -18,82 +18,80 @@ import java.util.Map;
  * @author Stephan Jamieson 
  * @version 1/4/2016
  */
-class AdjacencyMapVertex<V, E> extends Vertex<V> {
+class AdjacencyMapVertex<V, E> extends Vertex<V> 
+{
     
     private Map<AdjacencyMapVertex<V, E>, AdjacencyMapEdge<E, V>> edges;
 
-	/**
-	 * Create an AdjacencyMapVertex with the given value.
-	 */
-    AdjacencyMapVertex(final V value) { 
+	//Create an AdjacencyMapVertex with the given value.
+    AdjacencyMapVertex(final V value) 
+    { 
 		super(value, null);
 		this.edges = new HashMap<AdjacencyMapVertex<V, E>, AdjacencyMapEdge<E, V>>();
-	}
+	}//end adjacency map vertex
 	
      
-	/**
-	 * Obtain the edges incident on this vertex.
-	 */
-	Iterable<AdjacencyMapEdge<E, V>> getIncidentOn() { return edges.values(); }
+	//Obtain the edges incident on this vertex.
+	Iterable<AdjacencyMapEdge<E, V>> getIncidentOn()
+    { 
+        return edges.values(); 
+    }//end
 	
-	/**
-	 * Obtain this vertices neighbours (i.e. those vertices to which it is
-	 * connected by an edge.)
-	 */
-	Iterable<AdjacencyMapVertex<V, E>> getNeighbours() { return edges.keySet(); }
+	//Obtain this vertices neighbours (i.e. those vertices to which it is connected by an edge.)
+	Iterable<AdjacencyMapVertex<V, E>> getNeighbours() 
+    { 
+        return edges.keySet(); 
+    }//end    
 	
-	/**
-	 * Determine whether this vertex is adjacent to that given. (i.e. that the
-	 * given vertex is in the adjacency map.)
-	 */
-	boolean isAdjacentTo(final AdjacencyMapVertex<V, E> other) { 
+	
+	//Determine whether this vertex is adjacent to that given. (i.e. that the given vertex is in the adjacency map.) 
+	boolean isAdjacentTo(final AdjacencyMapVertex<V, E> other) 
+    { 
 		// Your code here
 		return false;
-	}
+	}//end
 	
-	/**
-	 * Insert the given edge into the adjacency map.
-	 */
-	void insert(final AdjacencyMapEdge<E, V> edge) { 
+	//Insert the given edge into the adjacency map.
+	void insert(final AdjacencyMapEdge<E, V> edge)
+    { 
 		// Your code here
-	}
+	}//end
 	
-	/**
-	 * Remove the given edge (and associated vertex) from the adjacency
-	 * map. 
-	 */
-	void remove(final AdjacencyMapEdge<E, V> edge) { 
+	// Remove the given edge (and associated vertex) from the adjacency
+	void remove(final AdjacencyMapEdge<E, V> edge)
+    { 
 		// Your code here
-	}
+	}//end
 	
-	/**
-	 * Remove the given vertex (and associated edge) from the adjacency
-	 * map.
-	 */
-	void remove(final AdjacencyMapVertex<V, E> vertex) {
+	//Remove the given vertex (and associated edge) from the adjacency map.
+	void remove(final AdjacencyMapVertex<V, E> vertex) 
+    {
 		// Your code here
-	}
+	}//end
 	
-	/**
-	 * Obtain a String representation of this vertex of the form 'vertex(value)'.
-	 */
-	public String toString() { return "vertex("+getValue()+")"; }
 	
-	/**
-	 * Obtain a dump (for debugging purposes) of the internal representation
-	 * of this vertex.
-	 */
-	public void dump() {
+	//Obtain a String representation of this vertex of the form 'vertex(value)'.
+	public String toString() 
+    { 
+        return "vertex("+getValue()+")"; 
+    }//end
+	
+	//Obtain a dump (for debugging purposes) of the internal representation of this vertex.
+	public void dump() 
+    {
 		System.out.print("\nVertex: value="+getValue()+" edges=[");
 		
 		Iterator<AdjacencyMapVertex<V, E>> iterator = edges.keySet().iterator();
-		if (iterator.hasNext()) {
+    
+		if (iterator.hasNext()) 
+        {
 			System.out.print(edges.get(iterator.next()));
-			while (iterator.hasNext()) {
+			while (iterator.hasNext()) 
+            {
 				System.out.print(", "+edges.get(iterator.next()));
-			}
-		}
+			}//end while
+		}//end  if
 		System.out.print(']');
-	}
+	}//end dump
 		
-}
+}//end class
