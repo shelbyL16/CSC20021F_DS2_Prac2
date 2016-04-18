@@ -47,14 +47,27 @@ class AdjacencyMapVertex<V, E> extends Vertex<V>
 	//Determine whether this vertex is adjacent to that given. (i.e. that the given vertex is in the adjacency map.) 
 	boolean isAdjacentTo(final AdjacencyMapVertex<V, E> other) 
     { 
-		// Your code here
-		return false;
+		boolean ans = false;
+        //this are the vertices
+        Iterable<AdjacencyMapVertex<V, E>> vertices = this.getNeighbours();
+        //String temp : crunchifyList
+        for (AdjacencyMapVertex<V, E> vertice : vertices)
+        {
+            if (vertice.equals(other))
+            {
+                ans = true;
+                //need to break the for loop to not return false at the end if the last ones are actually not equal
+                break;
+            }//end if 
+        }//end for 
+        
+		return ans;
 	}//end
 	
 	//Insert the given edge into the adjacency map.
 	void insert(final AdjacencyMapEdge<E, V> edge)
     { 
-		// Your code here
+		this.setValue(edge);
 	}//end
 	
 	// Remove the given edge (and associated vertex) from the adjacency
