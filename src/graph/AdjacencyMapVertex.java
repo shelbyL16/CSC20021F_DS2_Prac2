@@ -67,21 +67,23 @@ class AdjacencyMapVertex<V, E> extends Vertex<V>
 	//Insert the given edge into the adjacency map.
 	void insert(final AdjacencyMapEdge<E, V> edge)
     { 
-		this.setValue(edge);
+        //need to apply opposite to an edge
+        edges.put(edge.getOpposite(this),edge);
 	}//end
 	
 	// Remove the given edge (and associated vertex) from the adjacency
 	void remove(final AdjacencyMapEdge<E, V> edge)
     { 
-		// Your code here
+		//need to apply opposite to an edge
+        edges.remove(edge.getOpposite(this),edge);
 	}//end
 	
 	//Remove the given vertex (and associated edge) from the adjacency map.
 	void remove(final AdjacencyMapVertex<V, E> vertex) 
     {
-		// Your code here
+		//remove the key, no key for it in map therefore cannot reference it
+        edges.remove(vertex);
 	}//end
-	
 	
 	//Obtain a String representation of this vertex of the form 'vertex(value)'.
 	public String toString() 
