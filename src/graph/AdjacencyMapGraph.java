@@ -42,84 +42,129 @@ import java.util.Set;
    
 	public Iterable<AdjacencyMapEdge<E, V>> getIncidentOn(final Vertex<V> vertex) 
     {
-		// Your code here
-		return null;
+        //need to cast it as it works on an adjacency map vertex and not a vertex
+		return this.cast(vertex).getIncidentOn();
 	}//end
     
     //getNeighbours
 	public Iterable<AdjacencyMapVertex<V, E>> getNeighbours(Vertex<V> v) 
     {
-		// Your code here
-		return null;
+	    //need to cast it as it works on an adjacency map vertex and not a vertex
+		return this.cast(v).getNeighbours();
 	}//end
 	
     //getVertices
 	public Pair<AdjacencyMapVertex<V, E>> getVertices(final Edge<E> edge) 
     {
-		// Your code here
-		return null;
+		//need to cast it as it works on an adjacency map vertex and not a edge
+		return this.cast(edge).getVertices();
 	}//end
     
     //getopposite
 	public AdjacencyMapVertex<V, E> getOpposite(final Vertex<V> vertex, final Edge<E> edge)
     {
-		// Your code here
-		return null;
+		//need to cast it as it works on an adjacency map vertex and not a edge
+		return cast(edge).getOpposite(cast(vertex));
 	}//end
     
     //areAdjacent
 	public boolean areAdjacent(final Vertex<V> v, final Vertex<V> w) 
     {
-		// Your code here
-		return false;
+		return cast(v).isAdjacentTo(cast(w));
 	}//end
    
     //replace vertex
 	public V replace(final Vertex<V> vertex, final V value) 
     {
-		// Your code here
-		return null;
+		V ans = vertex.getValue();
+        //these are the vertices
+        Iterable<AdjacencyMapVertex<V, E>> vertices = this.getVertices();
+        //String temp : crunchifyList
+        for (AdjacencyMapVertex<V, E> vertice : vertices)
+        {
+            if (vertice.equals(cast(vertex)))
+            {
+                
+                vertex.setValue(value);
+                //need to break the for loop to not return false at the end if the last ones are actually not equal
+                break;
+            }//end if 
+        }//end for 
+		return ans;
 	}//end
 
     //replace edges
 	public E replace(final Edge<E> edge, final E value) 
     {
-		// Your code here
-		return null;
+		E ans = edge.getValue();
+        //these are the vertices
+        Iterable<AdjacencyMapEdge<E, V>> e = this.getEdges();
+        //String temp : crunchifyList
+        for (AdjacencyMapEdge<E, V> ed : e)
+        {
+            if (ed.equals(cast(edge)))
+            {
+                edge.setValue(value);
+                //need to break the for loop to not return false at the end if the last ones are actually not equal
+                break;
+            }//end if 
+        }//end for 
+		return ans;
 	}//end
    
     //insert
 	public AdjacencyMapVertex<V, E> insert(final V value) 
     {
-		// Your code here
-		return null;
+		AdjacencyMapVertex<V, E> AMVertex = this.createVertex(value);
+        this.vertices.add(AMVertex);
+		return AMVertex;
 	}//end
     
     //insert vertex
 	public AdjacencyMapEdge<E, V> insert(Vertex<V> v, Vertex<V> w, E value) 
     {
-		// Your code here
-		return null;
+		AdjacencyMapEdge<E, V> AMEdge = this.createEdge(cast(v),cast(w),value);
+        this.edges.add(AMEdge);
+		return AMEdge;
 	}//end
    
     //remove vertex
 	public V remove(Vertex<V> vertex) 
     {
-		// Your code here
-		return null;
+		Iterable<AdjacencyMapVertex<V, E>> v = cast(vertex).getNeighbours();
+        for (AdjacencyMapVertex<V, E> ve : v)
+        {
+            ve.remove(cast(vertex));
+        }//end for 
+		this.vertices.remove(cast(vertex));
+        return vertex.getValue();
 	}//end	
 
     //remove edge
 	public E remove(Edge<E> edge)  
     {
-		// Your code here
-		return null;
-	}//end
+		Pair<AdjacencyMapVertex<V, E>> paired = cast(edge).getVertices();
+        paired.getRight().remove(cast(edge));
+        paired.getLeft().remove(cast(edge));
+
+        return edge.getValue();	
+    }//end
 	
     //clear all the marks
 	public void clearMarks() 
     {
-		// Your code here
+		Iterable<AdjacencyMapEdge<E, V>> e = this.getEdges();
+        Iterable<AdjacencyMapVertex<V, E>> v = this.getVertices();
+	
+        for (AdjacencyMapEdge<E, V> ed : e)
+        {
+            ed.clearMark();
+        }//end for 
+
+        for (AdjacencyMapVertex<V, E> ve : v)
+        {
+            ve.clearMark();
+        }//end for 
 	}//end		
 	/*
 	 * The following methods should be used to create edges and vertices.

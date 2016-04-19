@@ -15,81 +15,157 @@ import java.util.Set;
  * @author Stephan Jamieson
  * @version 1/4/2016
  */
- public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
+ public class AdjacencyMapGraph<V, E> implements Graph<V, E> 
+{
 	 
 	private Set<AdjacencyMapVertex<V, E>> vertices;
 	private Set<AdjacencyMapEdge<E, V>> edges;
 	
-	/**
-	 * Create a new graph.
-	 */
-	public AdjacencyMapGraph() {
+	//Create a new graph.
+	public AdjacencyMapGraph() 
+    {
 		this.vertices = new HashSet<AdjacencyMapVertex<V, E>>();
 		this.edges = new HashSet<AdjacencyMapEdge<E, V>>();
-	}
+	}//end
 	
-	public Iterable<AdjacencyMapVertex<V, E>> getVertices() { return vertices; }
+    //getvertices
+	public Iterable<AdjacencyMapVertex<V, E>> getVertices() 
+    { 
+        return vertices; 
+    }//end
 
-	public Iterable<AdjacencyMapEdge<E, V>> getEdges() { return edges; }
+    //getedges
+	public Iterable<AdjacencyMapEdge<E, V>> getEdges() 
+    { 
+        return edges; 
+    }//end
    
-	public Iterable<AdjacencyMapEdge<E, V>> getIncidentOn(final Vertex<V> vertex) {
-		// Your code here
-		return null;
-	}
-
-	public Iterable<AdjacencyMapVertex<V, E>> getNeighbours(Vertex<V> v) {
-		// Your code here
-		return null;
-	}
-		
-	public Pair<AdjacencyMapVertex<V, E>> getVertices(final Edge<E> edge) {
-		// Your code here
-		return null;
-	}
+	public Iterable<AdjacencyMapEdge<E, V>> getIncidentOn(final Vertex<V> vertex) 
+    {
+        //need to cast it as it works on an adjacency map vertex and not a vertex
+		return this.cast(vertex).getIncidentOn();
+	}//end
     
-	public AdjacencyMapVertex<V, E> getOpposite(final Vertex<V> vertex, final Edge<E> edge){
-		// Your code here
-		return null;
-	}
-    
-	public boolean areAdjacent(final Vertex<V> v, final Vertex<V> w) {
-		// Your code here
-		return false;
-	}
-   
-	public V replace(final Vertex<V> vertex, final V value) {
-		// Your code here
-		return null;
-	}
-
-	public E replace(final Edge<E> edge, final E value) {
-		// Your code here
-		return null;
-	}
-   
-	public AdjacencyMapVertex<V, E> insert(final V value) {
-		// Your code here
-		return null;
-	}
-
-	public AdjacencyMapEdge<E, V> insert(Vertex<V> v, Vertex<V> w, E value) {
-		// Your code here
-		return null;
-	}
-   
-	public V remove(Vertex<V> vertex) {
-		// Your code here
-		return null;
-	}	
-
-	public E remove(Edge<E> edge)  {
-		// Your code here
-		return null;
-	}
+    //getNeighbours
+	public Iterable<AdjacencyMapVertex<V, E>> getNeighbours(Vertex<V> v) 
+    {
+	    //need to cast it as it works on an adjacency map vertex and not a vertex
+		return this.cast(v).getNeighbours();
+	}//end
 	
-	public void clearMarks() {
-		// Your code here
-	}		
+    //getVertices
+	public Pair<AdjacencyMapVertex<V, E>> getVertices(final Edge<E> edge) 
+    {
+		//need to cast it as it works on an adjacency map vertex and not a edge
+		return this.cast(edge).getVertices();
+	}//end
+    
+    //getopposite
+	public AdjacencyMapVertex<V, E> getOpposite(final Vertex<V> vertex, final Edge<E> edge)
+    {
+		//need to cast it as it works on an adjacency map vertex and not a edge
+		return cast(edge).getOpposite(cast(vertex));
+	}//end
+    
+    //areAdjacent
+	public boolean areAdjacent(final Vertex<V> v, final Vertex<V> w) 
+    {
+		return cast(v).isAdjacentTo(cast(w));
+	}//end
+   
+    //replace vertex
+	public V replace(final Vertex<V> vertex, final V value) 
+    {
+		V ans = vertex.getValue();
+        //these are the vertices
+        Iterable<AdjacencyMapVertex<V, E>> vertices = this.getVertices();
+        //String temp : crunchifyList
+        for (AdjacencyMapVertex<V, E> vertice : vertices)
+        {
+            if (vertice.equals(cast(vertex)))
+            {
+                
+                vertex.setValue(value);
+                //need to break the for loop to not return false at the end if the last ones are actually not equal
+                break;
+            }//end if 
+        }//end for 
+		return ans;
+	}//end
+
+    //replace edges
+	public E replace(final Edge<E> edge, final E value) 
+    {
+		E ans = edge.getValue();
+        //these are the vertices
+        Iterable<AdjacencyMapEdge<E, V>> e = this.getEdges();
+        //String temp : crunchifyList
+        for (AdjacencyMapEdge<E, V> ed : e)
+        {
+            if (ed.equals(cast(edge)))
+            {
+                edge.setValue(value);
+                //need to break the for loop to not return false at the end if the last ones are actually not equal
+                break;
+            }//end if 
+        }//end for 
+		return ans;
+	}//end
+   
+    //insert
+	public AdjacencyMapVertex<V, E> insert(final V value) 
+    {
+		AdjacencyMapVertex<V, E> AMVertex = this.createVertex(value);
+        this.vertices.add(AMVertex);
+		return AMVertex;
+	}//end
+    
+    //insert vertex
+	public AdjacencyMapEdge<E, V> insert(Vertex<V> v, Vertex<V> w, E value) 
+    {
+		AdjacencyMapEdge<E, V> AMEdge = this.createEdge(cast(v),cast(w),value);
+        this.edges.add(AMEdge);
+		return AMEdge;
+	}//end
+   
+    //remove vertex
+	public V remove(Vertex<V> vertex) 
+    {
+		Iterable<AdjacencyMapVertex<V, E>> v = cast(vertex).getNeighbours();
+        for (AdjacencyMapVertex<V, E> ve : v)
+        {
+            ve.remove(cast(vertex));
+        }//end for 
+		this.vertices.remove(cast(vertex));
+        return vertex.getValue();
+	}//end	
+
+    //remove edge
+	public E remove(Edge<E> edge)  
+    {
+		Pair<AdjacencyMapVertex<V, E>> paired = cast(vertex).getVertices();
+        paired.getRight().remove(cast(edge));
+        paired.getLeft().remove(cast(edge));
+
+        return edge.getValue();	
+    }//end
+	
+    //clear all the marks
+	public void clearMarks() 
+    {
+		Iterable<AdjacencyMapEdge<E, V>> e = this.getEdges();
+        Iterable<AdjacencyMapVertex<V, E>> v = this.getVertices();
+	
+        for (AdjacencyMapEdge<E, V> ed : e)
+        {
+            ed.clearMark();
+        }//end for 
+
+        for (AdjacencyMapVertex<V, E> ve : v)
+        {
+            ve.clearMark();
+        }//end for 
+	}//end		
 	/*
 	 * The following methods should be used to create edges and vertices.
 	 * They ensure that the objects created are marked as belonging to

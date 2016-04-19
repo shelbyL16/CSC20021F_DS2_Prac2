@@ -2,7 +2,7 @@ package graph;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-/**
+/**https://docs.oracle.com/javase/8/docs/api/java/util/Map.html
  * 
  * An AdjacencyMapVertex<V, E> is the concrete type of Vertex<V> object
  * used in the AdjacencyMapGraph<V, E> implementation of Graphh<V,E>.
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 class AdjacencyMapVertex<V, E> extends Vertex<V> 
 {
-    
+    //this is a map, therefore can use map classes
     private Map<AdjacencyMapVertex<V, E>, AdjacencyMapEdge<E, V>> edges;
 
 	//Create an AdjacencyMapVertex with the given value.
