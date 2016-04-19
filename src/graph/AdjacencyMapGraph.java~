@@ -15,112 +15,81 @@ import java.util.Set;
  * @author Stephan Jamieson
  * @version 1/4/2016
  */
- public class AdjacencyMapGraph<V, E> implements Graph<V, E> 
-{
+ public class AdjacencyMapGraph<V, E> implements Graph<V, E> {
 	 
 	private Set<AdjacencyMapVertex<V, E>> vertices;
 	private Set<AdjacencyMapEdge<E, V>> edges;
 	
-	//Create a new graph.
-	public AdjacencyMapGraph() 
-    {
+	/**
+	 * Create a new graph.
+	 */
+	public AdjacencyMapGraph() {
 		this.vertices = new HashSet<AdjacencyMapVertex<V, E>>();
 		this.edges = new HashSet<AdjacencyMapEdge<E, V>>();
-	}//end
+	}
 	
-    //getvertices
-	public Iterable<AdjacencyMapVertex<V, E>> getVertices() 
-    { 
-        return vertices; 
-    }//end
+	public Iterable<AdjacencyMapVertex<V, E>> getVertices() { return vertices; }
 
-    //getedges
-	public Iterable<AdjacencyMapEdge<E, V>> getEdges() 
-    { 
-        return edges; 
-    }//end
+	public Iterable<AdjacencyMapEdge<E, V>> getEdges() { return edges; }
    
-	public Iterable<AdjacencyMapEdge<E, V>> getIncidentOn(final Vertex<V> vertex) 
-    {
+	public Iterable<AdjacencyMapEdge<E, V>> getIncidentOn(final Vertex<V> vertex) {
 		// Your code here
 		return null;
-	}//end
+	}
+
+	public Iterable<AdjacencyMapVertex<V, E>> getNeighbours(Vertex<V> v) {
+		// Your code here
+		return null;
+	}
+		
+	public Pair<AdjacencyMapVertex<V, E>> getVertices(final Edge<E> edge) {
+		// Your code here
+		return null;
+	}
     
-    //getNeighbours
-	public Iterable<AdjacencyMapVertex<V, E>> getNeighbours(Vertex<V> v) 
-    {
+	public AdjacencyMapVertex<V, E> getOpposite(final Vertex<V> vertex, final Edge<E> edge){
 		// Your code here
 		return null;
-	}//end
-	
-    //getVertices
-	public Pair<AdjacencyMapVertex<V, E>> getVertices(final Edge<E> edge) 
-    {
-		// Your code here
-		return null;
-	}//end
+	}
     
-    //getopposite
-	public AdjacencyMapVertex<V, E> getOpposite(final Vertex<V> vertex, final Edge<E> edge)
-    {
-		// Your code here
-		return null;
-	}//end
-    
-    //areAdjacent
-	public boolean areAdjacent(final Vertex<V> v, final Vertex<V> w) 
-    {
+	public boolean areAdjacent(final Vertex<V> v, final Vertex<V> w) {
 		// Your code here
 		return false;
-	}//end
+	}
    
-    //replace vertex
-	public V replace(final Vertex<V> vertex, final V value) 
-    {
+	public V replace(final Vertex<V> vertex, final V value) {
 		// Your code here
 		return null;
-	}//end
+	}
 
-    //replace edges
-	public E replace(final Edge<E> edge, final E value) 
-    {
+	public E replace(final Edge<E> edge, final E value) {
 		// Your code here
 		return null;
-	}//end
+	}
    
-    //insert
-	public AdjacencyMapVertex<V, E> insert(final V value) 
-    {
+	public AdjacencyMapVertex<V, E> insert(final V value) {
 		// Your code here
 		return null;
-	}//end
-    
-    //insert vertex
-	public AdjacencyMapEdge<E, V> insert(Vertex<V> v, Vertex<V> w, E value) 
-    {
-		// Your code here
-		return null;
-	}//end
-   
-    //remove vertex
-	public V remove(Vertex<V> vertex) 
-    {
-		// Your code here
-		return null;
-	}//end	
+	}
 
-    //remove edge
-	public E remove(Edge<E> edge)  
-    {
+	public AdjacencyMapEdge<E, V> insert(Vertex<V> v, Vertex<V> w, E value) {
 		// Your code here
 		return null;
-	}//end
+	}
+   
+	public V remove(Vertex<V> vertex) {
+		// Your code here
+		return null;
+	}	
+
+	public E remove(Edge<E> edge)  {
+		// Your code here
+		return null;
+	}
 	
-    //clear all the marks
-	public void clearMarks() 
-    {
+	public void clearMarks() {
 		// Your code here
-	}//end		
+	}		
 	/*
 	 * The following methods should be used to create edges and vertices.
 	 * They ensure that the objects created are marked as belonging to

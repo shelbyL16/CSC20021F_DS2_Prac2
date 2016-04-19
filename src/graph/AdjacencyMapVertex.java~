@@ -82,7 +82,7 @@ class AdjacencyMapVertex<V, E> extends Vertex<V>
 	void remove(final AdjacencyMapVertex<V, E> vertex) 
     {
 		//remove the key, no key for it in map therefore cannot reference it
-        edge.remove(vertex);
+        edges.remove(vertex);
 	}//end
 	
 	//Obtain a String representation of this vertex of the form 'vertex(value)'.

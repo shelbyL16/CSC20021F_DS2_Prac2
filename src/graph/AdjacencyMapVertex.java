@@ -60,7 +60,6 @@ class AdjacencyMapVertex<V, E> extends Vertex<V>
                 break;
             }//end if 
         }//end for 
-        
 		return ans;
 	}//end
 	
