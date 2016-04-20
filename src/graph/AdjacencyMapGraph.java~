@@ -135,7 +135,13 @@ import java.util.Set;
         for (AdjacencyMapVertex<V, E> ve : v)
         {
             ve.remove(cast(vertex));
-        }//end for 
+        }//end for  
+        Iterable<AdjacencyMapEdge<E, V>> two = cast(vertex).getIncidentOn();
+        
+        for(AdjacencyMapVertex<V, E> ver : two)
+        {
+           this.edges.remove(cast(ver));
+        }//end outter for
 		this.vertices.remove(cast(vertex));
         return vertex.getValue();
 	}//end	
@@ -143,7 +149,7 @@ import java.util.Set;
     //remove edge
 	public E remove(Edge<E> edge)  
     {
-		Pair<AdjacencyMapVertex<V, E>> paired = cast(vertex).getVertices();
+		Pair<AdjacencyMapVertex<V, E>> paired = cast(edge).getVertices();
         paired.getRight().remove(cast(edge));
         paired.getLeft().remove(cast(edge));
 
@@ -151,6 +157,7 @@ import java.util.Set;
     }//end
 	
     //clear all the marks
+
 	public void clearMarks() 
     {
 		Iterable<AdjacencyMapEdge<E, V>> e = this.getEdges();

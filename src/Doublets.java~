@@ -17,8 +17,8 @@ import java.util.Map;
 	public Doublets(final String wordFile) throws FileNotFoundException 
     {
         //need to implememt the variables that have been created        
-        //graph = new AdjacencyMapGraph();
-		//wordList = new HashMap();
+        graph = new AdjacencyMapGraph();
+		wordList = new HashMap();
 	}//end
 
 	/**
