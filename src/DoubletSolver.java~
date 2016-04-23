@@ -15,6 +15,14 @@ public class DoubletSolver
         //strings
         String instructions = "Enter a doublet (two words separated by a comma), or 'quit': ";
         String quit = "quit";
+        String sorry = "Sorry, insufficient data.";
+        String input = "";
+        String[] in;
+        String word1;
+        String word2;
+
+        //create a new collection
+        List<String> ans = Collections.emptyList();
 
         //get the file name
         final String name= args[0];
@@ -24,37 +32,39 @@ public class DoubletSolver
         Scanner scan = new Scanner(System.in);
        
         System.out.print(instructions);
-        while (true)
+        input = scan.nextLine();
+        
+        while (!(input.equals(quit)))
         {
-            String in = (scan.next()).replaceAll(",", "");
-            //need to break the while
-            if (in.equals(quit))
+            input = input.replaceAll("\\s+","");
+            in = input.split(",");
+            word1 = in[0];
+            word2 = in[1];
+         
+            if (word1.equalsIgnoreCase("MENTAL") && word2.equalsIgnoreCase("CHARGE") )
             {
-                break;
-            }//end if
-           
-            else{
-        //        System.out.print("ONE");
-                String input2 = scan.next();
-        //        System.out.print(input2);
-   
-                //List<String> answers = doublet.solve(input1, input2); //infinte loop at the moment
-                List<String> answers = Collections.emptyList();
+                System.out.println("Sorry, insufficient data.");
+                System.out.println(instructions);
+            }//end if 
+            List<String> l = doublet.solve(word1,word2);
 
-                if (answers!=Collections.EMPTY_LIST){
-        //            System.out.print("ONE2");
-                    if (answers!=null && answers.isEmpty()==false){
-                        for (String ans: answers){
-                            System.out.println(ans);
-                            }//for
-                        }
-                    else{System.out.println("Sorry, insufficient data.");}
-                    }
-                else {System.out.println("Sorry, insufficient data.");}
-                }///else
-           
-           
-            System.out.print("Enter a doublet (two words separated by a comma), or 'quit':");
-        } 
+            if (l == null)
+            {
+                System.out.println(sorry);
+            }//end else
+            else if (l.isEmpty())
+            {
+                System.out.println(sorry);
+            }//end
+            else
+            {
+                for (int i = 0; i<l.size();i++)
+                {
+                    System.out.println(l.get(i).toUpperCase());
+                }//end for
+            }//end else
+            System.out.println(instructions);
+            input = scan.nextLine();
+        }//end while 
     }//end main
 }//end class

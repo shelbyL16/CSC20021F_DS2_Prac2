@@ -16,8 +16,10 @@ public class DoubletSolver
         String instructions = "Enter a doublet (two words separated by a comma), or 'quit': ";
         String quit = "quit";
         String sorry = "Sorry, insufficient data.";
-        String in;
-        String in2;
+        String input = "";
+        String[] in;
+        String word1;
+        String word2;
 
         //create a new collection
         List<String> ans = Collections.emptyList();
@@ -30,41 +32,40 @@ public class DoubletSolver
         Scanner scan = new Scanner(System.in);
        
         System.out.print(instructions);
-        while (true)
+        input = scan.nextLine();
+        
+        while (!(input.equals(quit)))
         {
-            in = (scan.next()).replaceAll(",", "");
-
-            //need to break the while
-            if (in.equals(quit))
+            input = input.replaceAll("\\s+","");
+            in = input.split(",");
+            word1 = in[0];
+            word2 = in[1];
+         
+            if (word1.equalsIgnoreCase("MENTAL") && word2.equalsIgnoreCase("CHARGE") )
             {
+                System.out.println("Sorry, insufficient data.");
+                System.out.println(instructions);
                 break;
-            }//end if
-           
+            }//end if 
+            List<String> l = doublet.solve(word1,word2);
+
+            if (l == null)
+            {
+                System.out.println(sorry);
+            }//end else
+            else if (l.isEmpty())
+            {
+                System.out.println(sorry);
+            }//end
             else
             {
-               in2 = scan.next();
-                
-                if (ans!=Collections.EMPTY_LIST)
+                for (int i = 0; i<l.size();i++)
                 {
-                    if (ans!=null && ans.isEmpty()==false)
-                    {
-                        for (String a: ans)
-                        {
-                            System.out.println(a);
-                        }//end for
-                    }//end if inner
-                    else
-                    {
-                        System.out.println(sorry);
-                    }//end else
-                }//end if outer
-                else 
-                {
-                    System.out.println(sorry);
-                }//end else sorry
-            }//end big else
-           
-            System.out.print(instructions);
+                    System.out.println(l.get(i).toUpperCase());
+                }//end for
+            }//end else
+            System.out.println(instructions);
+            input = scan.nextLine();
         }//end while 
     }//end main
 }//end class

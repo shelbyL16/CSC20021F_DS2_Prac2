@@ -38,7 +38,7 @@ import java.util.*;
             //need to loop through the list of String
             for (String one: listStr)
             {
-                //need to create a string vertex
+                //need to create a string vertex, so that can insert to graph
                 Vertex<String> v;
                
                 //check to see if it doesnt contain it
@@ -55,16 +55,13 @@ import java.util.*;
                 for(Vertex<String> adjacent : wordList.values())
                 {
                    
-                    if (v!= adjacent && !graph.areAdjacent(v, adjacent) && listStr.contains(v.getValue()))
+                    if (v!= adjacent && !graph.areAdjacent(v, adjacent))
                     {
                         Edge<String> e = graph.insert(v, adjacent,"");
                     }//end if
                 }//end for nested
             }//end for loop    
         }//end while
-        
-        
-        
 	}//end
 
 	/**
@@ -76,9 +73,80 @@ import java.util.*;
 	 */
 	public List<String> solve(final String wordOne, final String wordTwo) 
     { 
-		// Your code here.
-		return null;
-	}//end
+        //create the vertices from the words
+        Vertex<String> vTwo = wordList.get(wordTwo);
+        Vertex<String> vOne = wordList.get(wordOne);
+        List<String> path = new ArrayList<String>();
+        
+        //if it contains either the one or the other
+        if ((wordList.containsKey(wordOne)) && (wordList.containsKey(wordOne))) 
+        {
+            List<Vertex<String>> ans = this.shortestPath(vOne, vTwo);
+    
+                for (Vertex<String> v : ans)
+                {
+                    path.add(v.getValue());
+                }//end for loop
+        }//end if
+        return path;
+  	}//end
+
+    public  List<Vertex<String>> shortestPath(final Vertex<String> vOne, final Vertex<String> vTwo) {
 			
-	// Your code here.
+	    //calculating shortest path given method by stephan
+		final List<List<Vertex<String>>> paths = new ArrayList<List<Vertex<String>>>();
+		final List<Vertex<String>> initialPath = new ArrayList<Vertex<String>>();
+        
+        //mark the first vertex and add to the initial path
+		vOne.mark();
+		initialPath.add(vOne);
+        //add initial path the paths	
+        paths.add(initialPath);	
+        //create a path and a new ArrayList
+		List<Vertex<String>> path;
+        List<Vertex<String>> n = new ArrayList<Vertex<String>>();
+
+        //while loop will always be true
+		while (true) 
+        {
+            if (paths.size() == 0)
+            {
+                
+                return n;
+            }//end 
+
+            //if not zero then do all of this
+			path = paths.remove(0);
+            //get the end
+			final Vertex<String> end = path.get(path.size()-1);//found to the last vertex
+			if (end==vTwo) 
+            {
+				break;
+			}//end if
+			else //if not
+            {
+                //get all the neighbours
+				for(Vertex<String> neighbour : graph.getNeighbours(end)) 
+                {
+					final List<Vertex<String>> newPath = new ArrayList<Vertex<String>>(path);
+					if (!neighbour.isMarked()) 
+                    {
+						neighbour.mark();
+						newPath.add(neighbour);
+						paths.add(newPath);
+					}//end if
+				}//end for
+			}//end else
+		}//end while
+        //clear marks at the end
+		graph.clearMarks();
+		if (path.size()==1) 
+        {
+			return null;
+		}//end if
+		else 
+        {
+			return path;
+		}//end else
+	}	
  }//end class
