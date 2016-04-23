@@ -13,8 +13,8 @@ public class DoubletSolver
         //declaring the variables        
         Scanner scanner = new Scanner();
         //accepting the name of the file
-        String file = args[0];
-        Doublets btdubs = new Doublets(file);
+        String nFile = args[0];
+        Doublets btdubs = new Doublets(nFile);
         String quit = "quit";
         
         //printing the instructions

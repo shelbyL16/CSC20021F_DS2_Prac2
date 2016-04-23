@@ -73,8 +73,35 @@ class AdjacencyMapVertex<V, E> extends Vertex<V>
 	// Remove the given edge (and associated vertex) from the adjacency
 	void remove(final AdjacencyMapEdge<E, V> edge)
     { 
-		//need to apply opposite to an edge
-        edges.remove(edge.getOpposite(this),edge);
+        //vertices of the edge (left and right)
+		Pair<AdjacencyMapVertex<V, E>> vertex = edge.getVertices(); 
+        
+        //get left and right
+        AdjacencyMapVertex<V, E> leftV = vertex.getLeft();
+        AdjacencyMapVertex<V, E> rightV = vertex.getRight();
+        
+        //need to remove the edge - this order matters otherwise stack overflow - lol jk
+        edges.remove(edge); 
+        
+        //get incident from left and right
+        Iterable<AdjacencyMapEdge<E, V>> leftE = leftV.getIncidentOn();
+        Iterable<AdjacencyMapEdge<E, V>> rightE = rightV.getIncidentOn(); 
+        
+
+
+        // Remove left vertex if it has no edges
+        if (leftE==null)
+        {
+            edges.remove(leftV);
+        }//end if 
+
+        // Remove right vertex if it has no edges 
+        if (rightE==null)
+        { 
+            edges.remove(rightV);
+        }//end if 
+        
+        
 	}//end
 	
 	//Remove the given vertex (and associated edge) from the adjacency map.

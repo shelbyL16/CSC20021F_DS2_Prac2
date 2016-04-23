@@ -26,7 +26,6 @@ public class DoubletSolver
             
             String one = words[0];
             String two = words[1];
-            
             btdubs.solve(one,two);
             System.out.println("Enter a doublet (two words separated by a comma), or 'quit':");
             if((scanner.next()).equalsIgnoreCase(quit))
