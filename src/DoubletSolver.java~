@@ -5,35 +5,56 @@ import utils.ClusterBuilder;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.*;
 
 public class DoubletSolver
 {
-    public static void main (String[]args)
-    {
-        //declaring the variables        
-        Scanner scanner = new Scanner();
-        //accepting the name of the file
-        String nFile = args[0];
-        Doublets btdubs = new Doublets(nFile);
+   public static void main(final String[] args) throws Exception 
+   {
+        //strings
+        String instructions = "Enter a doublet (two words separated by a comma), or 'quit': ";
         String quit = "quit";
-        
-        //printing the instructions
-        System.out.println("Enter a doublet (two words separated by a comma), or 'quit':");
-        while (!(scanner.next()).equalsIgnoreCase(quit))
+
+        //get the file name
+        final String name= args[0];
+        //create a doublet object with the file name given
+        Doublets doublet = new Doublets(name);
+        //create a scanner
+        Scanner scan = new Scanner(System.in);
+       
+        System.out.print(instructions);
+        while (true)
         {
-            System.out.println();
-            String[] words = scanner.split(',')'
-            
-            String one = words[0];
-            String two = words[1];
-            
-            btdubs.solve(one,two);
-            System.out.println("Enter a doublet (two words separated by a comma), or 'quit':");
-            if((scanner.next()).equalsIgnoreCase(quit))
+            String in = (scan.next()).replaceAll(",", "");
+            //need to break the while
+            if (in.equals(quit))
             {
                 break;
-            }//end
-        }//end while
-    }//end main method 
-    	
+            }//end if
+           
+            else{
+        //        System.out.print("ONE");
+                String input2 = scan.next();
+        //        System.out.print(input2);
+   
+                //List<String> answers = doublet.solve(input1, input2); //infinte loop at the moment
+                List<String> answers = Collections.emptyList();
+
+                if (answers!=Collections.EMPTY_LIST){
+        //            System.out.print("ONE2");
+                    if (answers!=null && answers.isEmpty()==false){
+                        for (String ans: answers){
+                            System.out.println(ans);
+                            }//for
+                        }
+                    else{System.out.println("Sorry, insufficient data.");}
+                    }
+                else {System.out.println("Sorry, insufficient data.");}
+                }///else
+           
+           
+            System.out.print("Enter a doublet (two words separated by a comma), or 'quit':");
+        } 
+    }//end main
 }//end class

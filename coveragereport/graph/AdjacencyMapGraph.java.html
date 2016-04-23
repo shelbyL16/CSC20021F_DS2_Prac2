@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AdjacencyMapGraph.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">.</a> &gt; <a href="index.source.html" class="el_package">graph</a> &gt; <span class="el_source">AdjacencyMapGraph.java</span></div><h1>AdjacencyMapGraph.java</h1><pre class="source lang-java linenums">package graph;
+import java.util.HashSet;
+import java.util.Set;
+/**
+ *
+ * An implementation of Graph that uses a linked representation 
+ * (vertex and edge objects). 
+ * &lt;p&gt;
+ * It is called 'AdjacencyMapGraph' because each vertex stores an adjacency 
+ * Map of edges incident upon it (as opposed to an adjacency list).
+ *&lt;p&gt;
+ * Operations such as inserting or deleting an edge involve updating the
+ * adjacency maps of the vertices incident upon it.
+ *  
+ * @author Stephan Jamieson
+ * @version 1/4/2016
+ */
+<span class="nc bnc" id="L18" title="All 2 branches missed."> public class AdjacencyMapGraph&lt;V, E&gt; implements Graph&lt;V, E&gt; </span>
+{
+	 
+	private Set&lt;AdjacencyMapVertex&lt;V, E&gt;&gt; vertices;
+	private Set&lt;AdjacencyMapEdge&lt;E, V&gt;&gt; edges;
+	
+	//Create a new graph.
+	public AdjacencyMapGraph() 
+<span class="nc" id="L26">    {</span>
+<span class="nc" id="L27">		this.vertices = new HashSet&lt;AdjacencyMapVertex&lt;V, E&gt;&gt;();</span>
+<span class="nc" id="L28">		this.edges = new HashSet&lt;AdjacencyMapEdge&lt;E, V&gt;&gt;();</span>
+<span class="nc" id="L29">	}//end</span>
+	
+    //getvertices
+	public Iterable&lt;AdjacencyMapVertex&lt;V, E&gt;&gt; getVertices() 
+    { 
+<span class="nc" id="L34">        return vertices; </span>
+    }//end
+
+    //getedges
+	public Iterable&lt;AdjacencyMapEdge&lt;E, V&gt;&gt; getEdges() 
+    { 
+<span class="nc" id="L40">        return edges; </span>
+    }//end
+   
+	public Iterable&lt;AdjacencyMapEdge&lt;E, V&gt;&gt; getIncidentOn(final Vertex&lt;V&gt; vertex) 
+    {
+        //need to cast it as it works on an adjacency map vertex and not a vertex
+<span class="nc" id="L46">		return this.cast(vertex).getIncidentOn();</span>
+	}//end
+    
+    //getNeighbours
+	public Iterable&lt;AdjacencyMapVertex&lt;V, E&gt;&gt; getNeighbours(Vertex&lt;V&gt; v) 
+    {
+	    //need to cast it as it works on an adjacency map vertex and not a vertex
+<span class="nc" id="L53">		return this.cast(v).getNeighbours();</span>
+	}//end
+	
+    //getVertices
+	public Pair&lt;AdjacencyMapVertex&lt;V, E&gt;&gt; getVertices(final Edge&lt;E&gt; edge) 
+    {
+		//need to cast it as it works on an adjacency map vertex and not a edge
+<span class="nc" id="L60">		return this.cast(edge).getVertices();</span>
+	}//end
+    
+    //getopposite
+	public AdjacencyMapVertex&lt;V, E&gt; getOpposite(final Vertex&lt;V&gt; vertex, final Edge&lt;E&gt; edge)
+    {
+		//need to cast it as it works on an adjacency map vertex and not a edge
+<span class="nc" id="L67">		return cast(edge).getOpposite(cast(vertex));</span>
+	}//end
+    
+    //areAdjacent
+	public boolean areAdjacent(final Vertex&lt;V&gt; v, final Vertex&lt;V&gt; w) 
+    {
+<span class="nc" id="L73">		return cast(v).isAdjacentTo(cast(w));</span>
+	}//end
+   
+    //replace vertex
+	public V replace(final Vertex&lt;V&gt; vertex, final V value) 
+    {
+<span class="nc" id="L79">		V ans = vertex.getValue();</span>
+        //these are the vertices
+<span class="nc" id="L81">        Iterable&lt;AdjacencyMapVertex&lt;V, E&gt;&gt; vertices = this.getVertices();</span>
+        //String temp : crunchifyList
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        for (AdjacencyMapVertex&lt;V, E&gt; vertice : vertices)</span>
+        {
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (vertice.equals(cast(vertex)))</span>
+            {
+                
+<span class="nc" id="L88">                vertex.setValue(value);</span>
+                //need to break the for loop to not return false at the end if the last ones are actually not equal
+<span class="nc" id="L90">                break;</span>
+            }//end if 
+<span class="nc" id="L92">        }//end for </span>
+<span class="nc" id="L93">		return ans;</span>
+	}//end
+
+    //replace edges
+	public E replace(final Edge&lt;E&gt; edge, final E value) 
+    {
+<span class="nc" id="L99">		E ans = edge.getValue();</span>
+        //these are the vertices
+<span class="nc" id="L101">        Iterable&lt;AdjacencyMapEdge&lt;E, V&gt;&gt; e = this.getEdges();</span>
+        //String temp : crunchifyList
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        for (AdjacencyMapEdge&lt;E, V&gt; ed : e)</span>
+        {
+<span class="nc bnc" id="L105" title="All 2 branches missed.">            if (ed.equals(cast(edge)))</span>
+            {
+<span class="nc" id="L107">                edge.setValue(value);</span>
+                //need to break the for loop to not return false at the end if the last ones are actually not equal
+<span class="nc" id="L109">                break;</span>
+            }//end if 
+<span class="nc" id="L111">        }//end for </span>
+<span class="nc" id="L112">		return ans;</span>
+	}//end
+   
+    //insert
+	public AdjacencyMapVertex&lt;V, E&gt; insert(final V value) 
+    {
+<span class="nc" id="L118">		AdjacencyMapVertex&lt;V, E&gt; AMVertex = this.createVertex(value);</span>
+<span class="nc" id="L119">        this.vertices.add(AMVertex);</span>
+<span class="nc" id="L120">		return AMVertex;</span>
+	}//end
+    
+    //insert vertex
+	public AdjacencyMapEdge&lt;E, V&gt; insert(Vertex&lt;V&gt; v, Vertex&lt;V&gt; w, E value) 
+    {
+<span class="nc" id="L126">		AdjacencyMapEdge&lt;E, V&gt; AMEdge = this.createEdge(cast(v),cast(w),value);</span>
+<span class="nc" id="L127">        this.edges.add(AMEdge);</span>
+<span class="nc" id="L128">        cast(v).insert(AMEdge);</span>
+<span class="nc" id="L129">        cast(w).insert(AMEdge);</span>
+<span class="nc" id="L130">		return AMEdge;</span>
+	}//end
+   
+    //remove vertex
+	public V remove(Vertex&lt;V&gt; vertex) 
+    {
+<span class="nc" id="L136">		Iterable&lt;AdjacencyMapVertex&lt;V, E&gt;&gt; v = cast(vertex).getNeighbours();</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        for (AdjacencyMapVertex&lt;V, E&gt; ve : v)</span>
+        {
+<span class="nc" id="L139">            ve.remove(cast(vertex));</span>
+<span class="nc" id="L140">        }//end for  </span>
+<span class="nc" id="L141">        Iterable&lt;AdjacencyMapEdge&lt;E, V&gt;&gt; two = cast(vertex).getIncidentOn();</span>
+        
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        for(AdjacencyMapEdge&lt;E, V&gt; ver : two)</span>
+        {
+<span class="nc" id="L145">           this.edges.remove(cast(ver));</span>
+<span class="nc" id="L146">        }//end outter for</span>
+<span class="nc" id="L147">		this.vertices.remove(cast(vertex));</span>
+<span class="nc" id="L148">        return vertex.getValue();</span>
+	}//end	
+
+    //remove edge
+	public E remove(Edge&lt;E&gt; edge)  
+    {
+		//Pair&lt;AdjacencyMapVertex&lt;V, E&gt;&gt; paired = cast(edge).getVertices();
+<span class="nc" id="L155">        edges.remove(cast(edge));</span>
+<span class="nc" id="L156">        return null;	</span>
+    }//end
+	
+    //clear all the marks
+
+	public void clearMarks() 
+    {
+<span class="nc" id="L163">		Iterable&lt;AdjacencyMapEdge&lt;E, V&gt;&gt; e = this.getEdges();</span>
+<span class="nc" id="L164">        Iterable&lt;AdjacencyMapVertex&lt;V, E&gt;&gt; v = this.getVertices();</span>
+	
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        for (AdjacencyMapEdge&lt;E, V&gt; ed : e)</span>
+        {
+<span class="nc" id="L168">            ed.clearMark();</span>
+<span class="nc" id="L169">        }//end for </span>
+
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        for (AdjacencyMapVertex&lt;V, E&gt; ve : v)</span>
+        {
+<span class="nc" id="L173">            ve.clearMark();</span>
+<span class="nc" id="L174">        }//end for </span>
+<span class="nc" id="L175">	}//end		</span>
+	/*
+	 * The following methods should be used to create edges and vertices.
+	 * They ensure that the objects created are marked as belonging to
+	 * this graph object.
+	 */
+	 
+	 
+	private AdjacencyMapVertex&lt;V, E&gt; createVertex(final V value) {
+<span class="nc" id="L184">		final AdjacencyMapVertex&lt;V, E&gt; vertex = new AdjacencyMapVertex&lt;V, E&gt;(value);</span>
+<span class="nc" id="L185">		vertex.setOwner(this);</span>
+<span class="nc" id="L186">		return vertex;</span>
+	}
+
+	private AdjacencyMapEdge&lt;E, V&gt; createEdge(final AdjacencyMapVertex&lt;V,E&gt; v, 
+		final AdjacencyMapVertex&lt;V, E&gt; w, final E value) {
+<span class="nc" id="L191">			final AdjacencyMapEdge&lt;E, V&gt; edge = new AdjacencyMapEdge&lt;E, V&gt;(v, w, value);</span>
+<span class="nc" id="L192">			edge.setOwner(this);</span>
+<span class="nc" id="L193">			return edge;</span>
+	}
+
+	/*
+	 * The Graph&lt;V, E&gt; interface uses Edge&lt;E&gt; and Vertex&lt;V&gt; data types.
+	 * Internally, an AdjacencyMapGraph&lt;V, E&gt; uses AdjacencyMapVertex&lt;V, E&gt;
+	 * and AdjacencyMapEdge&lt;E, V&gt; data types. The following methods
+	 * may be used to safely cast from one to the other.
+	 */
+	 
+	@SuppressWarnings(&quot;unchecked&quot;)
+	private AdjacencyMapEdge&lt;E, V&gt; cast(final Edge&lt;E&gt; edge) {
+<span class="nc bnc" id="L205" title="All 4 branches missed.">		assert(edge.belongsTo(this));</span>
+<span class="nc" id="L206">		return (AdjacencyMapEdge&lt;E, V&gt;)edge;		</span>
+	}
+
+	/**
+	 *
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)	
+	private AdjacencyMapVertex&lt;V, E&gt; cast(final Vertex&lt;V&gt; vertex) {
+<span class="nc bnc" id="L214" title="All 4 branches missed.">		assert(vertex.belongsTo(this));</span>
+<span class="nc" id="L215">		return (AdjacencyMapVertex&lt;V, E&gt;)vertex;</span>
+	}
+	
+	/**
+	 * Obtain a dump (for debugging purposes) of the graph representation.
+	 */ 
+	public void dump() {
+<span class="nc" id="L222">		dumpVertices();</span>
+<span class="nc" id="L223">		dumpEdges();</span>
+<span class="nc" id="L224">		System.out.println();</span>
+<span class="nc" id="L225">	} </span>
+	
+	/**
+	 * Obtain a dump (for debugging purposes) of the vertex representations.
+	 */ 
+	public void dumpVertices() {
+<span class="nc" id="L231">		System.out.print(&quot;\nVERTICES&quot;);</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (AdjacencyMapVertex&lt;V, E&gt; vertex : vertices) {</span>
+<span class="nc" id="L233">			vertex.dump();</span>
+<span class="nc" id="L234">		}</span>
+<span class="nc" id="L235">	}</span>
+	
+	/**
+	 * Obtain a dump (for debugging purposes) of the edge representations.
+	 */ 
+	public void dumpEdges() {
+<span class="nc" id="L241">		System.out.print(&quot;\nEDGES&quot;);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">		for (AdjacencyMapEdge&lt;E, V&gt; edge : edges) {</span>
+<span class="nc" id="L243">			System.out.print(&quot;\n&quot;+edge);</span>
+<span class="nc" id="L244">		}</span>
+<span class="nc" id="L245">	}	</span>
+	
+ }
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

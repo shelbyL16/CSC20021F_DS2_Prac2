@@ -28,7 +28,7 @@ vpath %.class $(BINDIR)/graph:$(BINDIR)/utils:$(BINDIR)
 #default rule - will be invoked by make
 all: Pair.class GraphEntity.class Edge.class Vertex.class Graph.class  \
 	AdjacencyMapVertex.class AdjacencyMapEdge.class AdjacencyMapGraph.class \
-	ClusterBuilder.class Doublets.class
+	ClusterBuilder.class Doublets.class DoubletSolver.class
 	
 # Rules for dealing with dependencies between GraphEntity and Graph
 Graph.class: GraphEntity.class Edge.class Vertex.class
