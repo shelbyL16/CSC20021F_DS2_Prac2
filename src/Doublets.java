@@ -28,22 +28,23 @@ import java.util.*;
         FileReader file = new FileReader(f);        
         ClusterBuilder cluster = new ClusterBuilder(file);
         
+        //initializing
         List<String> listStr;
-        
+       
         //need to go thorugh the cluster
         while (cluster.hasNext())
         {
+            Vertex<String> v;
+            Edge<String> e;
             listStr = cluster.next();
             
             //need to loop through the list of String
             for (String one: listStr)
             {
-                //need to create a string vertex, so that can insert to graph
-                Vertex<String> v;
-               
                 //check to see if it doesnt contain it
-                if (!wordList.containsKey(listStr))
+                if (!wordList.containsKey(one))
                 {
+                    //need to put it in once
                     v = graph.insert(one);
                     wordList.put(one, v);
                 }//end if 
@@ -52,15 +53,20 @@ import java.util.*;
                     v = wordList.get(one);
                 }//end else
                
-                for(Vertex<String> adjacent : wordList.values())
+            for (String word: listStr)
+            {
+                for(String adjacent : listStr)
                 {
-                   
-                    if (v!= adjacent && !graph.areAdjacent(v, adjacent))
-                    {
-                        Edge<String> e = graph.insert(v, adjacent,"");
-                    }//end if
+                   if(wordList.containsKey(adjacent))
+                   {
+                        if (!one.equals(adjacent) && !graph.areAdjacent(wordList.get(one), wordList.get(adjacent)))
+                        {
+                             graph.insert(wordList.get(one), wordList.get(adjacent),"");
+                        }//end inner if
+                   }//end if outside
                 }//end for nested
-            }//end for loop    
+            }//end for loop 
+            }//end   
         }//end while
 	}//end
 
@@ -82,18 +88,24 @@ import java.util.*;
         if ((wordList.containsKey(wordOne)) && (wordList.containsKey(wordOne))) 
         {
             List<Vertex<String>> ans = this.shortestPath(vOne, vTwo);
+        
+            if (ans != null) {
     
                 for (Vertex<String> v : ans)
                 {
                     path.add(v.getValue());
                 }//end for loop
+
+            return path;
+            }
         }//end if
-        return path;
+        
+        return null;
   	}//end
 
     public  List<Vertex<String>> shortestPath(final Vertex<String> vOne, final Vertex<String> vTwo) {
 			
-	    //calculating shortest path given method by stephan
+	    //calculating shortest path given method by stephan and changed it abit
 		final List<List<Vertex<String>>> paths = new ArrayList<List<Vertex<String>>>();
 		final List<Vertex<String>> initialPath = new ArrayList<Vertex<String>>();
         
@@ -112,7 +124,7 @@ import java.util.*;
             if (paths.size() == 0)
             {
                 
-                return n;
+                return null;
             }//end 
 
             //if not zero then do all of this
