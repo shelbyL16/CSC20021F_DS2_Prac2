@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Doublets.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">.</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Doublets.java</span></div><h1>Doublets.java</h1><pre class="source lang-java linenums">import java.io.*;
+import graph.*;
+import utils.ClusterBuilder;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Map.*;
+import java.util.*;
+
+    //Solver for Lewis Carrol's Doublets game.
+    public class Doublets 
+    {
+ 
+    	private Map&lt;String, Vertex&lt;String&gt;&gt; wordList;
+    	private Graph&lt;String, String&gt; graph;
+	
+	//Create a Doublets object for solving problems over the words in the given file. @throws FileNotFoundException
+	public Doublets(final String wordFile) throws FileNotFoundException 
+<span class="nc" id="L18">    {</span>
+            
+        //need to implememt the variables that have been created        
+<span class="nc" id="L21">        graph = new AdjacencyMapGraph&lt;String , String&gt;();</span>
+<span class="nc" id="L22">	    wordList = new HashMap&lt;String, Vertex&lt;String&gt;&gt;();</span>
+        
+        //need to create a file object now
+<span class="nc" id="L25">        File f = new File(wordFile);</span>
+
+        //need to create a cluster builder object now as well - need to create a file reader object for the cluster builder
+<span class="nc" id="L28">        FileReader file = new FileReader(f);        </span>
+<span class="nc" id="L29">        ClusterBuilder cluster = new ClusterBuilder(file);</span>
+        
+        //initializing
+        List&lt;String&gt; listStr;
+       
+        //need to go thorugh the cluster
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        while (cluster.hasNext())</span>
+        {
+            Vertex&lt;String&gt; v;
+            Edge&lt;String&gt; e;
+<span class="nc" id="L39">            listStr = cluster.next();</span>
+            
+            //need to loop through the list of String
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            for (String one: listStr)</span>
+            {
+                //check to see if it doesnt contain it
+<span class="nc bnc" id="L45" title="All 2 branches missed.">                if (!wordList.containsKey(one))</span>
+                {
+                    //need to put it in once
+<span class="nc" id="L48">                    v = graph.insert(one);</span>
+<span class="nc" id="L49">                    wordList.put(one, v);</span>
+                }//end if 
+                else //if it contains it
+                {
+<span class="nc" id="L53">                    v = wordList.get(one);</span>
+                }//end else
+               
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            for (String word: listStr)</span>
+            {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                for(String adjacent : listStr)</span>
+                {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">                   if(wordList.containsKey(adjacent))</span>
+                   {
+<span class="nc bnc" id="L62" title="All 4 branches missed.">                        if (!one.equals(adjacent) &amp;&amp; !graph.areAdjacent(wordList.get(one), wordList.get(adjacent)))</span>
+                        {
+<span class="nc" id="L64">                             graph.insert(wordList.get(one), wordList.get(adjacent),&quot;&quot;);</span>
+                        }//end inner if
+                   }//end if outside
+<span class="nc" id="L67">                }//end for nested</span>
+<span class="nc" id="L68">            }//end for loop </span>
+<span class="nc" id="L69">            }//end   </span>
+        }//end while
+<span class="nc" id="L71">	}//end</span>
+
+	/**
+	 * Obtain the solution to the doublet (wordOne, wordTwo). Returns null if one or other of the words 
+       is not in the lexicon. Returns an empty list if there is no solution. Otherwise returns a 
+       list of words beginning with wordOne and ending in wordTwo, with zero or more intervening words.
+	   The list is such that (i) any adjacent pair of words in the list differ by at most one letter, and 
+       (ii) it represents the shortest route from wordOne to wordTwo.
+	 */
+	public List&lt;String&gt; solve(final String wordOne, final String wordTwo) 
+    { 
+        //create the vertices from the words
+<span class="nc" id="L83">        Vertex&lt;String&gt; vTwo = wordList.get(wordTwo);</span>
+<span class="nc" id="L84">        Vertex&lt;String&gt; vOne = wordList.get(wordOne);</span>
+<span class="nc" id="L85">        List&lt;String&gt; path = new ArrayList&lt;String&gt;();</span>
+        
+        //if it contains either the one or the other
+<span class="nc bnc" id="L88" title="All 4 branches missed.">        if ((wordList.containsKey(wordOne)) &amp;&amp; (wordList.containsKey(wordOne))) </span>
+        {
+<span class="nc" id="L90">            List&lt;Vertex&lt;String&gt;&gt; ans = this.shortestPath(vOne, vTwo);</span>
+        
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (ans != null) {</span>
+    
+<span class="nc bnc" id="L94" title="All 2 branches missed.">                for (Vertex&lt;String&gt; v : ans)</span>
+                {
+<span class="nc" id="L96">                    path.add(v.getValue());</span>
+<span class="nc" id="L97">                }//end for loop</span>
+
+<span class="nc" id="L99">            return path;</span>
+            }
+        }//end if
+        
+<span class="nc" id="L103">        return null;</span>
+  	}//end
+
+    public  List&lt;Vertex&lt;String&gt;&gt; shortestPath(final Vertex&lt;String&gt; vOne, final Vertex&lt;String&gt; vTwo) {
+			
+	    //calculating shortest path given method by stephan and changed it abit
+<span class="nc" id="L109">		final List&lt;List&lt;Vertex&lt;String&gt;&gt;&gt; paths = new ArrayList&lt;List&lt;Vertex&lt;String&gt;&gt;&gt;();</span>
+<span class="nc" id="L110">		final List&lt;Vertex&lt;String&gt;&gt; initialPath = new ArrayList&lt;Vertex&lt;String&gt;&gt;();</span>
+        
+        //mark the first vertex and add to the initial path
+<span class="nc" id="L113">		vOne.mark();</span>
+<span class="nc" id="L114">		initialPath.add(vOne);</span>
+        //add initial path the paths	
+<span class="nc" id="L116">        paths.add(initialPath);	</span>
+        //create a path and a new ArrayList
+		List&lt;Vertex&lt;String&gt;&gt; path;
+<span class="nc" id="L119">        List&lt;Vertex&lt;String&gt;&gt; n = new ArrayList&lt;Vertex&lt;String&gt;&gt;();</span>
+
+        //while loop will always be true
+		while (true) 
+        {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (paths.size() == 0)</span>
+            {
+                
+<span class="nc" id="L127">                return null;</span>
+            }//end 
+
+            //if not zero then do all of this
+<span class="nc" id="L131">			path = paths.remove(0);</span>
+            //get the end
+<span class="nc" id="L133">			final Vertex&lt;String&gt; end = path.get(path.size()-1);//found to the last vertex</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">			if (end==vTwo) </span>
+            {
+<span class="nc" id="L136">				break;</span>
+			}//end if
+			else //if not
+            {
+                //get all the neighbours
+<span class="nc bnc" id="L141" title="All 2 branches missed.">				for(Vertex&lt;String&gt; neighbour : graph.getNeighbours(end)) </span>
+                {
+<span class="nc" id="L143">					final List&lt;Vertex&lt;String&gt;&gt; newPath = new ArrayList&lt;Vertex&lt;String&gt;&gt;(path);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">					if (!neighbour.isMarked()) </span>
+                    {
+<span class="nc" id="L146">						neighbour.mark();</span>
+<span class="nc" id="L147">						newPath.add(neighbour);</span>
+<span class="nc" id="L148">						paths.add(newPath);</span>
+					}//end if
+<span class="nc" id="L150">				}//end for</span>
+			}//end else
+<span class="nc" id="L152">		}//end while</span>
+        //clear marks at the end
+<span class="nc" id="L154">		graph.clearMarks();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (path.size()==1) </span>
+        {
+<span class="nc" id="L157">			return null;</span>
+		}//end if
+		else 
+        {
+<span class="nc" id="L161">			return path;</span>
+		}//end else
+	}	
+ }//end class
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

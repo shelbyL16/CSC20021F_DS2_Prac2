@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ClusterBuilder.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">.</a> &gt; <a href="index.source.html" class="el_package">utils</a> &gt; <span class="el_source">ClusterBuilder.java</span></div><h1>ClusterBuilder.java</h1><pre class="source lang-java linenums">package utils;
+import java.io.Reader;
+//
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+/**
+ * The class provides a means of, given a list of strings (words) all
+ * the same length,  arranging them into clusters such that the members 
+ * of a cluster all differ by exactly the ith letter.
+ * &lt;p&gt;
+ * e.g.  the 3rd letter is the only difference between the words 
+ * &quot;heap&quot;, &quot;hemp&quot;, and &quot;help&quot;. Thus these words form a cluster.
+ * &lt;p&gt;
+ * A cluster always contains two or more words i.e. words that don't fit
+ * in any cluster are discarded.
+ * &lt;p&gt;
+ * Algorithm based on Knuth, &quot;The Stanford GraphBase: {A} Platform 
+ * for Combinatorial Algorithms&quot;, Proceedings of the Fourth Annual 
+ * ACM/SIGACT-SIAM Symposium on Discrete Algorithms, 25-27 January 
+ * 1993, Austin, Texas.
+ * 
+ * @author Stephan Jamieson
+ * @version 1/4/2016
+ */
+public class ClusterBuilder {
+
+	private Iterator&lt;List&lt;String&gt;&gt; iterator;
+	private List&lt;String&gt; nextCluster;
+	/**
+	 * Create a ClusterBuilder for obtaining clusters of words from
+	 * the given list.
+	 */
+<span class="fc" id="L39">	public ClusterBuilder(final Reader input) {</span>
+<span class="fc" id="L40">		final Map&lt;String, List&lt;String&gt;&gt; clusters = new HashMap&lt;String, List&lt;String&gt;&gt;();</span>
+<span class="fc" id="L41">		final Scanner scanner = new Scanner(input);</span>
+		
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		while(scanner.hasNext()) {</span>
+<span class="fc" id="L44">			final String word = scanner.nextLine();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">			for (int i=0; i&lt;word.length(); i++) {</span>
+<span class="fc" id="L46">				final String cluster = word.substring(0, i)+'*'+word.substring(i+1, word.length());</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">				if (clusters.containsKey(cluster)) {</span>
+<span class="fc" id="L48">					clusters.get(cluster).add(word);</span>
+				}
+				else {
+<span class="fc" id="L51">					final List&lt;String&gt; wordMatches = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L52">					wordMatches.add(word);</span>
+<span class="fc" id="L53">					clusters.put(cluster, wordMatches);</span>
+				}
+			}
+<span class="fc" id="L56">		}</span>
+<span class="fc" id="L57">		this.iterator = clusters.values().iterator();</span>
+<span class="fc" id="L58">		this.getNextCluster();</span>
+<span class="fc" id="L59">	}	</span>
+	
+	/**
+	 * Get next cluster to be returned by next(), filtering out clusters 
+	 * of size one.
+	 */
+	private void getNextCluster() {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">		while(iterator.hasNext()) {</span>
+<span class="fc" id="L67">			nextCluster=iterator.next();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">			if (nextCluster.size()&gt;1) {</span>
+<span class="fc" id="L69">				return;</span>
+			}
+		}
+<span class="fc" id="L72">		nextCluster = null;</span>
+<span class="fc" id="L73">	}</span>
+	
+	/** 
+	 * Obtain the next cluster of words.
+	 */
+	public List&lt;String&gt; next() { 
+<span class="fc" id="L79">		final List&lt;String&gt; result = nextCluster; </span>
+<span class="fc" id="L80">		this.getNextCluster();</span>
+<span class="fc" id="L81">		return result; </span>
+	}
+	
+	
+	/** 
+	 * Returns true if there is another cluster, false otherwise.
+	 */
+<span class="fc bfc" id="L88" title="All 2 branches covered.">	public boolean hasNext() { return nextCluster!=null; }</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
